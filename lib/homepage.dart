@@ -13,45 +13,34 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late TabController tb;
+  @override
+  void initState() {
+    tb = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Should we keep App bar?'),
+        title: Text('Present Mam'),
+        bottom: TabBar(
+          tabs: [            
+            Text("Home"),
+            Text("Settings"),
+          ],
+          controller: tb,
+        ),
       ),
-      body: SafeArea(
-          child: Column(
+      body: TabBarView(
         children: [
-          Expanded(
-            child: Consumer<MenuInfo>(
-              builder: (BuildContext context, MenuInfo value, Widget? child) {
-                if (value.menuType == MenuType.configuration)
-                  return ConfigurationPage();
-                else if (value.menuType == MenuType.markAttendance)
-                  return AttendancePage();
-                else
-                  return Container(
-                    child: Text('Nothing selected'),
-                  );
-                // we can add animation here : like the container flips
-              },
-            ),
-          ),
-          Divider(
-            color: Colors.black87,
-            height: 1,
-          ),
-          // Bottom Navigation menu
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: menuItems
-                .map((currentMenuInfo) => buildMenuButton(currentMenuInfo))
-                .toList(),
-          )
+            ConfigurationPage(),
+            AttendancePage(),
         ],
-      )),
+        controller: tb,
+      ),
     );
   }
 }
