@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'enums.dart';
-import 'data.dart';
-import 'menu_info.dart';
 import 'pages/attendance_page.dart';
 import 'pages/configuration_page.dart';
 
@@ -14,10 +10,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  late TabController tb;
+  late TabController _tabController;
+  final List<Tab> topTabs = <Tab>[
+    Tab(text: 'HomePage'),
+    Tab(text: 'Attendance Page'),
+  ];
   @override
   void initState() {
-    tb = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -25,53 +25,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Present Mam'),
+        title: Text(
+          'Present Mam',
+          style: TextStyle(fontFamily: 'avenir', fontSize: 24),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.more_vert),
+          ),
+        ],
         bottom: TabBar(
-          tabs: [            
-            Text("Home"),
-            Text("Settings"),
-          ],
-          controller: tb,
+          tabs: topTabs,
+          controller: _tabController,
         ),
       ),
       body: TabBarView(
         children: [
-            ConfigurationPage(),
-            AttendancePage(),
+          ConfigurationPage(),
+          AttendancePage(),
         ],
-        controller: tb,
+        controller: _tabController,
       ),
     );
   }
-}
-
-Widget buildMenuButton(MenuInfo currentMenuInfo) {
-  return Consumer<MenuInfo>(
-    builder: (BuildContext context, MenuInfo value, Widget? child) {
-      return FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(26), topRight: Radius.circular(26))),
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-          color: currentMenuInfo.menuType == value.menuType
-              ? Colors.blue[100]
-              : Colors.transparent,
-          onPressed: () {
-            var menuInfo = Provider.of<MenuInfo>(context, listen: false);
-            menuInfo.updateMenu(currentMenuInfo);
-          },
-          child: Column(
-            children: [
-              Image.asset(
-                currentMenuInfo.imagePath,
-                scale: 1.5,
-              ),
-              Text(
-                currentMenuInfo.title,
-                style: TextStyle(fontSize: 14, fontFamily: 'avenir'),
-              ),
-            ],
-          ));
-    },
-  );
 }

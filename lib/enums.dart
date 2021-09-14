@@ -1,1 +1,0 @@
-enum MenuType { configuration, markAttendance }

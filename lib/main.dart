@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'enums.dart';
 import 'homepage.dart';
-import 'menu_info.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,10 +23,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: ChangeNotifierProvider<MenuInfo>(
-        create: (_) => MenuInfo(MenuType.configuration, 'title', 'imagePath'),
-        child: HomePage(),
-      ),
+      home: HomePage(),
     );
   }
 }
