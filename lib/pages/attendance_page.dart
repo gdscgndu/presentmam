@@ -9,20 +9,39 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  @override
-  Widget build(BuildContext context) {
+  var filename = '';
+  Widget uploadbtn() {
     return RaisedButton(
-      child: Text('UPLOAD FILE'),
+      child: Text('Upload'),
       onPressed: () async {
         var picked = await FilePicker.platform.pickFiles();
 
         if (picked != null) {
-          print(picked.files.first.name);
+          setState(() {
+            filename = picked.files.first.name;
+          });
+          // print(picked.files.first.name);
         }
       },
     );
   }
-  // Widget build(BuildContext context) {
-  //   return Text('Attendance Page');
-  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+              //child_2
+              padding: EdgeInsets.all(20.0),
+              child: Column(children: [
+                Text("Upload Student data in CSV format"),
+                uploadbtn(),
+                Text("$filename"),
+              ]))
+        ],
+      ),
+    );
+  }
 }
