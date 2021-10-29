@@ -12,13 +12,39 @@ class AttendancePage extends StatefulWidget {
   _AttendancePageState createState() => _AttendancePageState();
 }
 
+
 class _AttendancePageState extends State<AttendancePage> {
   var filename = '';
+  Widget displaytable(fields){
+    return Container(
+      child: Row(children: [
+      Table(
+      border: TableBorder.all(width: 1.0, color: Colors.black),
+        children: [
+          for (var data in fields) TableRow(children: [
+            TableCell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  new Text(data[0]),
+                  new Text(data[1].toString()),
+                ],
+              ),
+            )
+          ])
+        ]
+    )
+      ],),
+    );
+  }
   Widget uploadbtn() {
     return RaisedButton(
       child: Text('Upload'),
       onPressed: () async{
-        var picked = await FilePicker.platform.pickFiles();
+        var picked = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['csv'],
+        );
         if (picked != null) {
           PlatformFile file = picked.files.first;
           var pathoffile=file.path.toString();
@@ -27,6 +53,8 @@ class _AttendancePageState extends State<AttendancePage> {
               .transform(utf8.decoder)
               .transform(new CsvToListConverter())
               .toList();
+
+
           var data='';
           for(int i=0;i<fields.length;i++){
             data+=fields[i][0]+fields[i][1].toString()+"\n";
