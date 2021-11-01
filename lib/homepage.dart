@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/attendance_page.dart';
 import 'pages/configuration_page.dart';
+import 'pages/classes_page.dart';
 
 
 
@@ -15,8 +16,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController _tabController;
   final List<Tab> topTabs = <Tab>[
-    Tab(text: 'HomePage'),
-    Tab(text: 'Attendance Page'),
+    Tab(text: 'Classes'),
+    Tab(text: 'Configuration'),
   ];
   @override
   void initState() {
@@ -45,8 +46,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
       body: TabBarView(
         children: [
+          Classes(),
           ConfigurationPage(),
-          AttendancePage(),
         ],
         controller: _tabController,
       ),
