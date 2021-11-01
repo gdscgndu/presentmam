@@ -11,6 +11,17 @@ class AttendancePage extends StatefulWidget {
 class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
-    return Text('Attendence Page');
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Mark Attendence")
+      ),
+      body:Container(
+        child: Row(
+          children: [
+            Text("In the Attendance page")
+          ],
+        ),
+      )
+    );
   }
 }
