@@ -29,6 +29,7 @@ class Classes extends StatelessWidget {
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
+
         children:<Widget>[ Column(
           children: <Widget>[
             Padding(
