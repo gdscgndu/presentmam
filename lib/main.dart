@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'homepage.dart';
+import 'package:presentmam/homepage.dart';
+import 'package:presentmam/splash.dart';
 import 'pages/settings_page.dart';
 import 'pages/attendance_page.dart';
 import 'pages/subjects_dart.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
         '/settings' : (context) => Settings(),
         '/attendance' :(context) => AttendancePage(),
         '/subjects' :(context) => Subjects(),
+        '/homepage': (context) => HomePage(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Present Mam',
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: splashscreen(),
     );
   }
 }
