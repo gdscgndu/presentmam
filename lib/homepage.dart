@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'pages/attendance_page.dart';
 import 'pages/configuration_page.dart';
-
-
-
+import 'pages/classes_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,11 +10,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  void onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        Navigator.pushNamed(context, '/settings');
+        break;
+    }
+  }
+
   late TabController _tabController;
   final List<Tab> topTabs = <Tab>[
-    Tab(text: 'HomePage'),
-    Tab(text: 'Attendance Page'),
+    Tab(text: 'Classes'),
+    Tab(text: 'Configuration'),
   ];
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -33,10 +39,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           style: TextStyle(fontFamily: 'avenir', fontSize: 24),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.more_vert),
-          ),
+          PopupMenuButton<int>(
+              onSelected: (item) => onSelected(context, item),
+              itemBuilder: (context) => [
+                    PopupMenuItem<int>(value: 0, child: Text("Settings")),
+                    PopupMenuItem<int>(value: 0, child: Text("View Students")),
+                  ])
         ],
         bottom: TabBar(
           tabs: topTabs,
@@ -45,8 +53,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
       body: TabBarView(
         children: [
+          Classes(),
           ConfigurationPage(),
-          AttendancePage(),
         ],
         controller: _tabController,
       ),
