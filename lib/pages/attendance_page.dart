@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -18,53 +19,110 @@ class _AttendancePageState extends State<AttendancePage> {
     students = getStudentData();
     studentDataSource = StudentDataSource(studentData: students);
   }
+
   final DataGridController _dataGridController = DataGridController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Mark Attendance'),
+    void displayDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          // title: const Text('Mark?'),
+          content: const Text('Mark the Attendance?'),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoDialogAction(
+              child: const Text('Yes'),
+              isDestructiveAction: true,
+              onPressed: () {
+                // Do something destructive.
+              },
+            )
+          ],
         ),
-        body: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MaterialButton(
-                  onPressed: () {
-                    var _selectedRows = _dataGridController.selectedRows;
-                    List<DataGridRow> data= _selectedRows;
-                    for(int i=0;i<data.length;i++){
-                      var nameval=data[i].getCells()[0].value;
-                      var rollnoval=data[i].getCells()[1].value;
-                      print(nameval);
-                      print(rollnoval);
-                    }
-                  },
-                  child: Text("Get values")),
-              SfDataGrid(
-                controller: _dataGridController,
-                allowSorting: true,
-                selectionMode: SelectionMode.multiple,
-                source: studentDataSource,
-                columnWidthMode: ColumnWidthMode.fill,
-                columns: <GridColumn>[
-                  GridColumn(
-                      columnName: 'Name',
-                      label: Container(
-                          padding: EdgeInsets.all(16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Name',
-                          ))),
-                  GridColumn(
-                      columnName: 'Roll No',
-                      label: Container(
-                          padding: EdgeInsets.all(8.0),
-                          alignment: Alignment.center,
-                          child: Text('Roll No'))),
-                ],
-              ),
-            ]));
+      );
+    }
+    Widget bottomBarWidget(text) {
+      return Expanded(
+          child: SizedBox(
+              height: 60.0,
+              child: InkWell(
+                onTap: () {
+                  print("pressed" + text);
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.search),
+                    Text("Search"),
+                  ],
+                ),
+              )));
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mark Attendance'),
+      ),
+      body: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                MaterialButton(
+                    onPressed: () {
+                      var _selectedRows = _dataGridController.selectedRows;
+                      List<DataGridRow> data = _selectedRows;
+                      for (int i = 0; i < data.length; i++) {
+                        var nameval = data[i].getCells()[0].value;
+                        var rollnoval = data[i].getCells()[1].value;
+                        print(nameval);
+                        print(rollnoval);
+                      }
+                    },
+                    child: Text("Get values")),
+                SfDataGrid(
+                  controller: _dataGridController,
+                  allowSorting: true,
+                  selectionMode: SelectionMode.multiple,
+                  source: studentDataSource,
+                  columnWidthMode: ColumnWidthMode.fill,
+                  columns: <GridColumn>[
+                    GridColumn(
+                        columnName: 'Name',
+                        label: Container(
+                            padding: EdgeInsets.all(16.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Name',
+                            ))),
+                    GridColumn(
+                        columnName: 'Roll No',
+                        label: Container(
+                            padding: EdgeInsets.all(8.0),
+                            alignment: Alignment.center,
+                            child: Text('Roll No'))),
+                  ],
+                ),
+              ],
+            )
+          ]),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: new FloatingActionButton(
+        onPressed:
+          displayDialog,
+        tooltip: 'Increment',
+        child: new Icon(Icons.save),
+      ),
+    );
   }
 
   List<Student> getStudentData() {
@@ -86,6 +144,7 @@ class _AttendancePageState extends State<AttendancePage> {
 
 class Student {
   Student(this.name, this.rollno);
+
   final String name;
   final String rollno;
 }
